@@ -1,0 +1,85 @@
+<!-- DOCTYPE declaration for HTML5 -->
+<!DOCTYPE html>
+<html lang="en"> <!-- Root element with language set to English -->
+
+<head> <!-- Head section starts -->
+  <meta charset="UTF-8"> <!-- Character encoding set to UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive scaling for devices -->
+  <title>Mondrian Project</title> <!-- Page title -->
+  <style>
+    /* Embedded CSS for Mondrian Project */
+    /* Color codes: Line: #000, White: #F0F1EC, Red: #E72F24, Black: #232629, Blue: #004592, Yellow: #F9D01E */
+
+    body {
+      display: flex; /* Center content horizontally and vertically */
+      justify-content: center; /* Horizontal centering */
+      align-items: center; /* Vertical centering */
+      height: 100vh; /* Full viewport height */
+      margin: 0; /* Remove default margin */
+      padding: 0; /* Remove default padding */
+    }
+
+    .container {
+      height: 748px; /* Grid container height */
+      width: 748px; /* Grid container width */
+      display: grid; /* Use CSS Grid */
+      background-color: #000; /* Black grid lines */
+      grid-template-columns: 320px 198px 153px 50px; /* 4 columns */
+      grid-template-rows: 414px 130px 155px 22px; /* 4 rows */
+      gap: 9px; /* Gap for grid lines */
+    }
+
+    .item {
+      background-color: #F0F1EC; /* Default white block */
+    }
+
+    .red {
+      background-color: #E72F24; /* Red block */
+    }
+
+    .white1 {
+      grid-column: span 3; /* Spans 3 columns */
+    }
+
+    .white2 {
+      grid-row: span 2; /* Spans 2 rows */
+    }
+
+    .white3 {
+      grid-area: 2 / 2 / 4 / 4; /* Specific grid area */
+    }
+
+    .blue {
+      background-color: #004592; /* Blue block */
+      border-bottom: 10px solid #000; /* Black border bottom */
+    }
+
+    .white4 {
+      grid-row: span 2; /* Spans 2 rows */
+    }
+
+    .yellow {
+      background-color: #F9D01E; /* Yellow block */
+    }
+
+    .black {
+      background-color: #232629; /* Black block */
+    }
+  </style>
+</head>
+
+<body> <!-- Body section starts -->
+  <div class="container"> <!-- Main grid container -->
+    <div class="item red"></div> <!-- Red block -->
+    <div class="item white1"></div> <!-- White block spanning 3 columns -->
+    <div class="item white2"></div> <!-- White block spanning 2 rows -->
+    <div class="item white3"></div> <!-- White block in specific area -->
+    <div class="item blue"></div> <!-- Blue block with black border -->
+    <div class="item white4"></div> <!-- White block spanning 2 rows -->
+    <div class="item"></div> <!-- Default white block -->
+    <div class="item yellow"></div> <!-- Yellow block -->
+    <div class="item black"></div> <!-- Black block -->
+  </div>
+</body>
+
+</html>
