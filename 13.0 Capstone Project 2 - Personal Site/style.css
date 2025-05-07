@@ -1,5 +1,5 @@
 .gradient-background {
-  background: linear-gradient(300deg, #00bfff, #ff4c68, #ef8172);
+  background: linear-gradient(300deg, #D8B5FF, #23969e, #aa1785);
   background-size: 180% 180%;
   animation: gradient-animation 18s ease infinite;
 }
@@ -22,7 +22,22 @@
   border-radius: 0.75rem;
 }
 
-.profile-img {
-  height: 100px;
-  border-radius: 50%;
+
+.project-img {
+  width: 100%;
+  max-width: 500px; /* optional: caps size for large screens */
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.project-img:hover {
+  transform: scale(1.03);
+}
+
+.baumans {
+  font-family: "Baumans", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
