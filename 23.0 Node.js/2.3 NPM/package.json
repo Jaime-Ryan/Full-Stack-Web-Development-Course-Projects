@@ -10,6 +10,7 @@
   "author": "Jaime Ryan",
   "license": "ISC",
   "dependencies": {
+    "inquirer": "^12.6.1",
     "sillyname": "^0.1.0",
     "superheroes": "^4.0.0"
   }
