@@ -1,0 +1,46 @@
+<%- include("partials/header.ejs") %>
+
+<div class="logo">
+  <div class="music-bars">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</div>
+
+<% if (locals.adjective && locals.noun) { %>
+  <h1><%= adjective %> <%= noun %></h1>
+<% } else { %>
+  <h1>Welcome to the Band Name Generator!</h1>
+<% } %>
+
+<form id="generateForm">
+  <input type="submit" value="Generate Name">
+</form>
+
+<script>
+document.getElementById('generateForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const response = await fetch('/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  const data = await response.json();
+  const h1 = document.querySelector('h1');
+  
+  // Add the fadeInScale animation
+  h1.style.animation = 'none';
+  h1.offsetHeight; // Trigger reflow
+  h1.style.animation = 'fadeInScale 0.5s ease-out';
+  
+  h1.textContent = `${data.adjective} ${data.noun}`;
+});
+</script>
+
+<%- include("partials/footer.ejs") %>
