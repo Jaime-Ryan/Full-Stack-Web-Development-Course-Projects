@@ -23,44 +23,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return `hsla(${h}, ${s}%, ${l}%, 0.3)`;
     }
 
-    let lastCell = { x: 0, y: 0 };    document.addEventListener('mousemove', (e) => {
-        // Calculate the center cell position
-        const centerX = Math.floor(e.clientX / 40) * 40;
-        const centerY = Math.floor(e.clientY / 40) * 40;
+    // Keep track of the last cell to avoid duplicates
+    let lastCell = null;
+    
+    document.addEventListener('mousemove', (e) => {
+        // Calculate the current cell position
+        const x = Math.floor(e.clientX / 40) * 40;
+        const y = Math.floor(e.clientY / 40) * 40;
         
-        // Create a 3x3 grid of cells around the mouse
-        for (let offsetX = -40; offsetX <= 40; offsetX += 40) {
-            for (let offsetY = -40; offsetY <= 40; offsetY += 40) {
-                const x = centerX + offsetX;
-                const y = centerY + offsetY;
-                
-                // Calculate distance from center for opacity
-                const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-                const opacity = 1 - (distance / (80 * Math.sqrt(2)));
-                
-                // Create or get cell at this position
-                let cell = document.createElement('div');
-                cell.className = 'grid-cell';
-                cell.style.left = `${x}px`;
-                cell.style.top = `${y}px`;
-                
-                // Apply color with distance-based opacity
-                const color = Math.random() > 0.5 ? 
-                    getRandomPastelColor() : 
-                    getRandomVibrantColor();
-                cell.style.backgroundColor = color.replace('0.3', opacity);
-                
-                // Add to grid background
-                const gridBackground = document.querySelector('.grid-background');
-                gridBackground.appendChild(cell);
-                
-                // Remove cell after animation
-                setTimeout(() => {
-                    cell.style.backgroundColor = 'transparent';
-                    setTimeout(() => cell.remove(), 300);
-                }, 1000);
-            }
-        }
+        // Skip if we're still in the same cell
+        if (lastCell && lastCell.x === x && lastCell.y === y) return;
+        lastCell = { x, y };
+        
+        // Create a single cell at the current position
+        let cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        cell.style.left = `${x}px`;
+        cell.style.top = `${y}px`;
+        
+        // Apply a random color
+        const color = Math.random() > 0.5 ? 
+            getRandomPastelColor() : 
+            getRandomVibrantColor();
+        cell.style.backgroundColor = color;
+        
+        // Add to grid background
+        const gridBackground = document.querySelector('.grid-background');
+        gridBackground.appendChild(cell);
+        
+        // Remove cell after animation
+        setTimeout(() => {
+            cell.style.opacity = '0';
+            setTimeout(() => cell.remove(), 300);
+        }, 1000);
     });
 
     function createGrid() {
