@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Admin Dashboard</h1>
+            <div class="header-buttons">
+                <a href="/" class="button">View Blog</a>
+                <a href="/admin/create" class="button">New Post</a>
+            </div>
+        </header>
+          <main class="posts-grid">
+            <% if (posts.length === 0) { %>
+                <p class="no-posts">No posts yet.</p>
+            <% } else { %>
+                <% posts.forEach(post => { %>
+                    <article class="post-card">
+                        <div class="post-card-content">
+                            <h2><%= post.title %></h2>
+                            <div class="post-meta">
+                                <%= post.date.toLocaleDateString('en-US', { 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                }) %>
+                            </div>
+                            <div class="post-preview">
+                                <%= post.preview %>
+                            </div>
+                            <div class="post-actions">
+                                <a href="/admin/edit/<%= post.id %>" class="button">Edit</a>
+                                <form action="/admin/delete/<%= post.id %>" method="POST" class="inline-form">
+                                    <button type="submit" class="button delete">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                <% }); %>
+            <% } %>
+        </main>
+    </div>
+</body>
+</html>

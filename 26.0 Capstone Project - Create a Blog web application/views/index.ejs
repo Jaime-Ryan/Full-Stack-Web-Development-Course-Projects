@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Blog</title>    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/animations.js" defer></script>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="animate-title">Welcome to My Blog</h1>
+            <p class="animate-subtitle">Exploring ideas, sharing stories, and documenting the journey.</p>
+            <div class="hero-buttons">
+                <a href="#latest-posts" class="button primary animate-button">Read Latest</a>
+                <a href="/admin" class="button secondary animate-button">Admin</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+            <span>Scroll to discover</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <section id="latest-posts">
+            <h2 class="section-title">Latest Posts</h2>
+          <main class="posts-grid">
+            <% if (posts.length === 0) { %>
+                <p class="no-posts">No posts yet.</p>
+            <% } else { %>
+                <% posts.forEach(post => { %>
+                    <article class="post-card">
+                        <div class="post-card-content">
+                            <h2><%= post.title %></h2>
+                            <div class="post-meta">
+                                <%= post.date.toLocaleDateString('en-US', { 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                }) %>
+                            </div>
+                            <div class="post-preview">
+                                <%= post.preview %>
+                            </div>
+                            <a href="/post/<%= post.id %>" class="read-more">Read More →</a>
+                        </div>
+                    </article>
+                <% }); %>
+            <% } %>
+        </main>
+    </div>
+</body>
+</html>
