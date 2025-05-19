@@ -2,6 +2,129 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Landing page script loaded'); // Debug log
     const overlay = document.getElementById('gridOverlay');
     const letters = document.querySelectorAll('.letter');
+    const gridBackground = document.querySelector('.grid-background');
+    const lightToggle = document.getElementById('lightToggle');
+    const html = document.documentElement;
+
+    // Light Animation Elements
+    const lightBulb = document.querySelector('.light-bulb');
+    const lightGlow = document.querySelector('.light-glow');
+    const beamCenter = document.querySelector('.beam-center');
+    const beamGlow = document.querySelector('.beam-glow');
+    const hero = document.querySelector('.hero');
+
+    // Function to create random flicker effect
+    const flicker = (target, baseOpacity, intensity = 1) => {
+        const flickerTimeline = gsap.timeline({
+            repeat: 2,
+            yoyo: true,
+            onComplete: () => gsap.to(target, {
+                opacity: baseOpacity,
+                duration: 0.2
+            })
+        });
+
+        for (let i = 0; i < 4; i++) {
+            flickerTimeline.to(target, {
+                opacity: baseOpacity * (0.3 + Math.random() * 0.7) * intensity,
+                duration: 0.1
+            });
+        }
+
+        return flickerTimeline;
+    };
+
+    // Create light animation timeline
+    const createLightAnimation = (on) => {
+        const tl = gsap.timeline({
+            defaults: { duration: 0.5, ease: "power2.inOut" }
+        });
+
+        if (on) {
+            // Turn on animation
+            tl.to(lightBulb, {
+                opacity: 0.3,
+                filter: "brightness(0.3)",
+                duration: 0.8
+            })
+            .add(flicker(lightBulb, 0.5))
+            .to([beamCenter, beamGlow], {
+                scaleY: 1,
+                opacity: (i) => i === 0 ? 0.4 : 0.3,
+                duration: 1.5,
+                ease: "power1.inOut",
+                stagger: 0.1
+            }, "-=0.3")
+            .add(flicker(lightBulb, 0.8, 1.2))
+            .add(flicker(beamCenter, 0.4, 1.5), "-=0.5")
+            .add(flicker(beamGlow, 0.3, 1.5), "-=0.5")
+            .to(lightBulb, {
+                opacity: 1,
+                filter: "brightness(1.2)",
+                duration: 0.8
+            })
+            .to(beamCenter, {
+                opacity: 0.8,
+                duration: 0.8
+            }, "-=0.8")
+            .to(beamGlow, {
+                opacity: 0.6,
+                duration: 0.8
+            }, "-=0.8")
+            .to(lightGlow, {
+                opacity: 1,
+                duration: 0.5
+            }, "-=0.4");
+        } else {
+            // Turn off animation
+            tl.to([lightGlow, beamCenter, beamGlow], {
+                opacity: 0,
+                duration: 0.3,
+                stagger: 0.1
+            })
+            .to([beamCenter, beamGlow], {
+                scaleY: 0,
+                duration: 0.5,
+                ease: "power2.in"
+            }, "-=0.2")
+            .to(lightBulb, {
+                opacity: 0.1,
+                filter: "brightness(0.1)",
+                duration: 0.3
+            }, "-=0.3");
+        }
+
+        return tl;
+    };
+
+    // Initialize in dark mode with light on
+    gsap.set([lightBulb, lightGlow, beamCenter, beamGlow], {
+        opacity: 1,
+        scaleY: 1
+    });
+
+    // Start with light on in dark mode
+    hero.classList.add('light-on');
+    createLightAnimation(true);
+
+    // Handle light switch toggle
+    lightToggle.addEventListener('change', () => {
+        const isLightMode = lightToggle.checked;
+        
+        // Toggle dark mode class
+        html.classList.toggle('dark-mode', !isLightMode);
+        
+        // Run animation
+        if (!isLightMode) {
+            // Switching to dark mode - turn light on
+            hero.classList.add('light-on');
+            createLightAnimation(true);
+        } else {
+            // Switching to light mode - turn light off
+            hero.classList.remove('light-on');
+            createLightAnimation(false);
+        }
+    });
 
     // Function to generate random pastel color
     function getRandomPastelColor() {
@@ -49,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cell.style.backgroundColor = color;
         
         // Add to grid background
-        const gridBackground = document.querySelector('.grid-background');
         gridBackground.appendChild(cell);
         
         // Remove cell after animation
@@ -163,8 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize rotating titles
     initRotatingTitles();
 });
-
-
 
 // Generate random pastel color
 function getRandomColor() {
