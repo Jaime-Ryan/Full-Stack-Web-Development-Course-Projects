@@ -59,19 +59,73 @@ body {
 /* Floating Letters */
 .floating-letters {
     display: flex;
-    gap: 2rem;
-    transform-style: preserve-3d;
+    gap: 5px;
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    perspective: 1000px;
+    position: relative;
+    z-index: 1;
 }
 
 .letter {
-    font-size: 8rem;
-    font-weight: 900;
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                color 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
     transform-style: preserve-3d;
+    width: 1em;
+    height: 1em;
+    user-select: none;
 }
+
+.letter:hover {
+    transform: translateZ(50px);
+}
+
+.letter.particle {
+    position: fixed;
+    pointer-events: none;
+    opacity: 1;
+    will-change: transform, opacity;
+    transition: 
+        opacity 0.6s ease-out, 
+        transform 0.8s cubic-bezier(0.2, 0.8, 0.4, 1);
+    z-index: 1000;
+    transform-origin: center;
+    text-shadow: 0 0 5px currentColor;
+    -webkit-font-smoothing: antialiased;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -webkit-font-smoothing: subpixel-antialiased;
+    image-rendering: optimizeSpeed;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.floating-letters .letter {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Add staggered animation delay */
+.floating-letters .letter:nth-child(1) { animation-delay: 0s; }
+.floating-letters .letter:nth-child(2) { animation-delay: 0.2s; }
+.floating-letters .letter:nth-child(3) { animation-delay: 0.4s; }
+.floating-letters .letter:nth-child(4) { animation-delay: 0.6s; }
+.floating-letters .letter:nth-child(5) { animation-delay: 0.8s; }
+.floating-letters .letter:nth-child(7) { animation-delay: 1s; }
+.floating-letters .letter:nth-child(8) { animation-delay: 1.2s; }
+.floating-letters .letter:nth-child(9) { animation-delay: 1.4s; }
+.floating-letters .letter:nth-child(10) { animation-delay: 1.6s; }
 
 .letter::before {
     content: attr(data-letter);
@@ -172,4 +226,39 @@ body {
         padding: 0.75rem 1.5rem;
         gap: 1.5rem;
     }
+}
+
+
+/* Rotating Titles (MANUALLY ADDED BY JAIME) */
+.rotating-titles {
+    position: fixed;
+    bottom: 120px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    height: 60px;
+    overflow: hidden;
+}
+
+.title-container {
+    position: relative;
+    height: 100%;
+}
+
+.title {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #028ce9;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.title.active {
+    opacity: 1;
+    transform: translateY(0);
 }

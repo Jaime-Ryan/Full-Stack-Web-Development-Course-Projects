@@ -466,3 +466,10 @@ textarea {
         font-size: 2rem;
     }
 }
+
+.title {
+    /* existing styles */
+    background-color: rgba(0, 0, 0, 0.5); /* Temporary background to make text visible */
+    padding: 10px 20px;
+    border-radius: 5px;
+}

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Landing page script loaded'); // Debug log
     const overlay = document.getElementById('gridOverlay');
     const letters = document.querySelectorAll('.letter');
 
@@ -128,7 +129,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         });
     });
+
+    // Rotating Titles Functionality
+    function initRotatingTitles() {
+        console.log('Initializing rotating titles...'); // Debug log
+        const titles = document.querySelectorAll('.title');
+        console.log('Found titles:', titles); // Debug log to check if elements are found
+        
+        let currentIndex = 0;
+        
+        // Show the first title
+        if (titles.length > 0) {
+            console.log('Activating first title'); // Debug log
+            titles[0].classList.add('active');
+        } else {
+            console.error('No title elements found!'); // Error log if no titles found
+        }
+        
+        // Rotate titles every 3 seconds
+        setInterval(() => {
+            console.log('Rotating to next title'); // Debug log
+            // Remove active class from current title
+            titles[currentIndex].classList.remove('active');
+            
+            // Move to next title (loop back to 0 if at the end)
+            currentIndex = (currentIndex + 1) % titles.length;
+            
+            // Add active class to new title
+            titles[currentIndex].classList.add('active');
+        }, 3000);
+    }
+    
+    // Initialize rotating titles
+    initRotatingTitles();
 });
+
+
 
 // Generate random pastel color
 function getRandomColor() {
