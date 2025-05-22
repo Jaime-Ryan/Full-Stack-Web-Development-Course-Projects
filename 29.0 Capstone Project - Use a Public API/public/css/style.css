@@ -1,0 +1,40 @@
+/* Custom styles for Food Facts Explorer */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    padding: 1rem;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+/* Nutri-Score badge styles */
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+}
+
+/* Product details page */
+.product-image {
+    max-height: 400px;
+    object-fit: contain;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 150px;
+    }
+} 

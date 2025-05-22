@@ -1,0 +1,116 @@
+<div class="row">
+    <div class="col-md-4">
+        <% if (product.image_url) { %>
+            <img src="<%= product.image_url %>" class="img-fluid rounded" alt="<%= product.product_name %>">
+        <% } else { %>
+            <div class="bg-light text-center py-5 rounded">No Image Available</div>
+        <% } %>
+    </div>
+    <div class="col-md-8">
+        <h1 class="mb-3"><%= product.product_name %></h1>
+        
+        <div class="mb-4">
+            <% if (product.brands) { %>
+                <p class="mb-1"><strong>Brand:</strong> <%= product.brands %></p>
+            <% } %>
+            <% if (product.quantity) { %>
+                <p class="mb-1"><strong>Quantity:</strong> <%= product.quantity %></p>
+            <% } %>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-sm-6 col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Nutri-Score</h5>
+                        <% if (product.nutriscore_grade) { %>
+                            <span class="display-4 text-<%= ['A', 'B'].includes(product.nutriscore_grade.toUpperCase()) ? 'success' : 'warning' %>">
+                                <%= product.nutriscore_grade.toUpperCase() %>
+                            </span>
+                        <% } else { %>
+                            <span class="text-muted">N/A</span>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">NOVA Group</h5>
+                        <% if (product.nova_group) { %>
+                            <span class="display-4"><%= product.nova_group %></span>
+                        <% } else { %>
+                            <span class="text-muted">N/A</span>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% if (product.ingredients_text) { %>
+            <div class="mb-4">
+                <h3>Ingredients</h3>
+                <p><%= product.ingredients_text %></p>
+            </div>
+        <% } %>
+
+        <% if (product.allergens_tags && product.allergens_tags.length > 0) { %>
+            <div class="mb-4">
+                <h3>Allergens</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    <% product.allergens_tags.forEach(allergen => { %>
+                        <span class="badge bg-danger"><%= allergen.replace('en:', '') %></span>
+                    <% }); %>
+                </div>
+            </div>
+        <% } %>
+
+        <% if (product.nutriments) { %>
+            <div class="mb-4">
+                <h3>Nutrition Facts</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nutrient</th>
+                                <th>Per 100g</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (product.nutriments.energy_100g) { %>
+                                <tr>
+                                    <td>Energy</td>
+                                    <td><%= product.nutriments.energy_100g %> kcal</td>
+                                </tr>
+                            <% } %>
+                            <% if (product.nutriments.fat_100g) { %>
+                                <tr>
+                                    <td>Fat</td>
+                                    <td><%= product.nutriments.fat_100g %>g</td>
+                                </tr>
+                            <% } %>
+                            <% if (product.nutriments.carbohydrates_100g) { %>
+                                <tr>
+                                    <td>Carbohydrates</td>
+                                    <td><%= product.nutriments.carbohydrates_100g %>g</td>
+                                </tr>
+                            <% } %>
+                            <% if (product.nutriments.proteins_100g) { %>
+                                <tr>
+                                    <td>Proteins</td>
+                                    <td><%= product.nutriments.proteins_100g %>g</td>
+                                </tr>
+                            <% } %>
+                            <% if (product.nutriments.salt_100g) { %>
+                                <tr>
+                                    <td>Salt</td>
+                                    <td><%= product.nutriments.salt_100g %>g</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div> 
