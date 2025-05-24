@@ -65,17 +65,14 @@ app.post("/jokes", (req, res) => {
   };
   
   jokes.push(newJoke);
+  console.log(jokes.slice(-1));
   res.status(201).json(newJoke);
 });
 
 //5. PUT a joke
 app.put("/jokes/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const { jokeText, jokeType, apiKey } = req.body;
-  
-  if (apiKey !== masterKey) {
-    return res.status(401).json({ error: "Unauthorized. Correct API key required." });
-  }
+  const { jokeText, jokeType } = req.body;
   
   if (!jokeText || !jokeType) {
     return res.status(400).json({ 
@@ -101,11 +98,7 @@ app.put("/jokes/:id", (req, res) => {
 //6. PATCH a joke
 app.patch("/jokes/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const { jokeText, jokeType, apiKey } = req.body;
-  
-  if (apiKey !== masterKey) {
-    return res.status(401).json({ error: "Unauthorized. Correct API key required." });
-  }
+  const { jokeText, jokeType } = req.body;
   
   const jokeIndex = jokes.findIndex((joke) => joke.id === id);
   
@@ -127,11 +120,6 @@ app.patch("/jokes/:id", (req, res) => {
 //7. DELETE Specific joke
 app.delete("/jokes/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const { apiKey } = req.body;
-  
-  if (apiKey !== masterKey) {
-    return res.status(401).json({ error: "Unauthorized. Correct API key required." });
-  }
   
   const jokeIndex = jokes.findIndex((joke) => joke.id === id);
   
