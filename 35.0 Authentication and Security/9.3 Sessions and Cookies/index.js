@@ -2,13 +2,31 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import bcrypt from "bcrypt";
+import passport from "passport";
+import { Strategy } from "passport-local";
+import session from "express-session";
 
 const app = express();
 const port = 3000;
 const saltRounds = 10;
 
+app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(session({
+  secret: "TOPSECRETWORD",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days in milliseconds
+    // secure: true, // Only enable in production with HTTPS
+    // httpOnly: true, // Prevents XSS attacks (enabled by default)
+  }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 const db = new pg.Client({
   user: "postgres",
@@ -20,7 +38,11 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/", (req, res) => {
-  res.render("home.ejs");
+  if (req.isAuthenticated()) {
+    res.redirect("/secrets");
+  } else {
+    res.render("home.ejs");
+  }
 });
 
 app.get("/login", (req, res) => {
@@ -29,6 +51,23 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.render("register.ejs");
+});
+
+app.get("/secrets", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("secrets.ejs");
+  } else {
+    res.redirect("/login");
+  }
+});
+
+app.get("/logout", (req, res) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 });
 
 app.post("/register", async (req, res) => {
@@ -41,19 +80,25 @@ app.post("/register", async (req, res) => {
     ]);
 
     if (checkResult.rows.length > 0) {
-      res.send("Email already exists. Try logging in.");
+      res.redirect("/login");
     } else {
       //hashing the password and saving it in the database
       bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) {
           console.error("Error hashing password:", err);
         } else {
-          console.log("Hashed Password:", hash);
-          await db.query(
-            "INSERT INTO users (email, password) VALUES ($1, $2)",
+          const result = await db.query(
+            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
             [email, hash]
           );
-          res.render("secrets.ejs");
+          const user = result.rows[0];
+          req.login(user, (err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.redirect("/secrets");
+            }
+          });
         }
       });
     }
@@ -62,34 +107,49 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
-  const email = req.body.username;
-  const loginPassword = req.body.password;
+app.post("/login", passport.authenticate("local", {
+  successRedirect: "/secrets",
+  failureRedirect: "/login",
+}));
 
-  try {
-    const result = await db.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
-    if (result.rows.length > 0) {
-      const user = result.rows[0];
-      const storedHashedPassword = user.password;
-      bcrypt.compare(loginPassword, storedHashedPassword, (err, result) => {
-        if (err) {
-          console.error("Error comparing passwords:", err);
-        } else {
-          if (result) {
-            res.render("secrets.ejs");
+// Passport Local Strategy
+passport.use(
+  new Strategy(async function verify(username, password, cb) {
+    try {
+      const result = await db.query("SELECT * FROM users WHERE email = $1", [
+        username,
+      ]);
+      if (result.rows.length > 0) {
+        const user = result.rows[0];
+        const storedHashedPassword = user.password;
+        bcrypt.compare(password, storedHashedPassword, (err, valid) => {
+          if (err) {
+            console.error("Error comparing passwords:", err);
+            return cb(err);
           } else {
-            res.send("Incorrect Password");
+            if (valid) {
+              return cb(null, user);
+            } else {
+              return cb(null, false);
+            }
           }
-        }
-      });
-    } else {
-      res.send("User not found");
+        });
+      } else {
+        return cb(null, false);
+      }
+    } catch (err) {
+      console.log(err);
+      return cb(err);
     }
-  } catch (err) {
-    console.log(err);
-  }
+  })
+);
+
+passport.serializeUser((user, cb) => {
+  cb(null, user);
+});
+
+passport.deserializeUser((user, cb) => {
+  cb(null, user);
 });
 
 app.listen(port, () => {
