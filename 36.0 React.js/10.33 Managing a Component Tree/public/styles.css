@@ -1,0 +1,187 @@
+body {
+  background-color: #ffeaa7;
+  min-height: 70vh;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: hsl(198, 1%, 29%);
+  font-family: "Architects Daughter", cursive;
+  text-align: center;
+  font-size: 130%;
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  min-height: 500px;
+  max-width: 500px;
+  min-width: 250px;
+  background: #f1f5f8;
+  background-image: radial-gradient(#bfc0c1 7.2%, transparent 0);
+  background-size: 25px 25px;
+  border-radius: 20px;
+  box-shadow: 4px 3px 7px 2px #00000040;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.heading h1 {
+  transform: rotate(2deg);
+  padding: 0.2rem 1.2rem;
+  border-radius: 20% 5% 20% 5%/5% 20% 25% 20%;
+  background-color: #fdcb6e;
+  font-size: 1.5rem;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form input {
+  box-sizing: border-box;
+  background-color: transparent;
+  padding: 0.7rem;
+  border-bottom-right-radius: 15px 3px;
+  border-bottom-left-radius: 3px 15px;
+  border: solid 3px transparent;
+  border-bottom: dashed 3px #fdcb6e;
+  font-family: "Architects Daughter", cursive;
+  font-size: 1rem;
+  color: hsla(260, 2%, 25%, 0.7);
+  flex-grow: 1;
+  max-width: 300px;
+}
+
+button {
+  padding: 0;
+  border: none;
+  font-family: "Architects Daughter", cursive;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-radius: 5px;
+  background-color: #ffeaa7;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0px);
+}
+
+button span {
+  background: #f1f5f8;
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: 2px solid hsl(198, 1%, 29%);
+}
+
+/* Todo item container */
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: background-color 0.2s ease;
+  gap: 15px;
+}
+
+.todo-item:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+li {
+  text-align: left;
+  position: relative;
+  padding: 0.5rem;
+  flex-grow: 1;
+  transition: all 0.3s ease;
+  user-select: none;
+  list-style: disc;
+  margin: 0;
+}
+
+li:hover {
+  transform: scale(1.02);
+}
+
+/* Delete button styling - matching the Add button style */
+.delete-btn {
+  padding: 0 !important;
+  border: none !important;
+  font-family: "Architects Daughter", cursive !important;
+  text-decoration: none !important;
+  padding-bottom: 3px !important;
+  border-radius: 5px !important;
+  background-color: #ff6b6b !important;
+  cursor: pointer !important;
+  transition: transform 0.1s ease !important;
+  flex-shrink: 0 !important;
+  min-width: auto !important;
+}
+
+.delete-btn:hover {
+  transform: translateY(-1px) !important;
+  background-color: #ff5252 !important;
+}
+
+.delete-btn:active {
+  transform: translateY(0px) !important;
+}
+
+.delete-btn span {
+  background: #f1f5f8 !important;
+  display: block !important;
+  padding: 0.3rem 0.8rem !important;
+  border-radius: 5px !important;
+  border: 2px solid hsl(198, 1%, 29%) !important;
+  color: hsl(198, 1%, 29%) !important;
+  font-size: 0.8rem !important;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .todo-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  li {
+    text-align: center;
+    padding: 0.3rem;
+  }
+  
+  .delete-btn {
+    align-self: flex-end !important;
+    width: fit-content !important;
+  }
+  
+  .form {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .form input {
+    width: 100%;
+    max-width: none;
+  }
+}
